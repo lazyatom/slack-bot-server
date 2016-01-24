@@ -48,6 +48,7 @@ require 'eventmachine'
 #   itself
 #
 class SlackBotServer::Server
+  LOCK = Mutex.new
   attr_reader :queue
 
   # Creates a new {Server}
@@ -76,7 +77,7 @@ class SlackBotServer::Server
   def start
     EM.run do
       @running = true
-      @bots.each { |key, bot| bot.start }
+      @bots.each { |_, bot| start_bot(bot) }
       listen_for_instructions if queue
     end
   end
@@ -102,7 +103,7 @@ class SlackBotServer::Server
     if bot.respond_to?(:start) && !bot(bot.key)
       log "adding bot #{bot}"
       @bots[bot.key.to_sym] = bot
-      bot.start if @running
+      start_bot(bot) if @running
     end
   rescue => e
     log_error(e)
@@ -113,14 +114,22 @@ class SlackBotServer::Server
   # @see SlackBotServer::Bot#stop
   def remove_bot(key)
     if (bot = bot(key))
-      bot.stop
-      @bots.delete(key.to_sym)
+      LOCK.synchronize do
+        EM.next_tick do
+          bot.stop
+          @bots.delete(key.to_sym)
+        end
+      end
     end
   rescue => e
     log_error(e)
   end
 
   private
+
+  def start_bot(bot)
+    EM.next_tick { bot.start }
+  end
 
   def listen_for_instructions
     EM.add_periodic_timer(1) do
