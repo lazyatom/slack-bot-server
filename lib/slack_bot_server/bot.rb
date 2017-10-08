@@ -100,6 +100,34 @@ class SlackBotServer::Bot
     end
   end
 
+  # Update a message on Slack
+  # @param options [Hash] a hash containing any of the following:
+  #    channel:: the name ('#general'), or the ID of the channel to send to
+  #    text:: the actual text of the message
+  #    username:: the name the message should appear from; defaults to the
+  #               value given to `username` in the Bot class definition
+  #    icon_url:: the image url to use as the avatar for this message;
+  #               defaults to the value given to `icon_url` in the Bot
+  #               class definition
+  def update(options)
+    message = symbolize_keys(options)
+
+    if rtm_incompatible_message?(message)
+      debug "Sending via Web API", message
+      client.web_client.chat_postMessage(message)
+    else
+      debug "Sending via RTM API", message
+      client.message(message)
+    end
+  end
+
+  # An placeholder for handling responses from the attachments
+  # api for interactive messages.
+  def interactive_respond(response)
+
+  end
+
+
   # Sends a message to every channel this bot is a member of
   # @param options [Hash] As {#say}, although the +:channel+ option is
   #   redundant
