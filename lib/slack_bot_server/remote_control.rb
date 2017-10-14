@@ -62,8 +62,8 @@ class SlackBotServer::RemoteControl
   #    interactive message.
   # @param response_data [Hash] passed directly to
   #    {SlackBotServer::Bot#update}; see there for argument details.
-  def interactive_respond(key, _response_data)
-    @queue.push([:interactive_respond, key, message_data])
+  def interactive_respond(key, response_data)
+    @queue.push([:interactive_respond, key, response_data])
   end
 
   # Sends a message to be called directly on the slack web API. Generally
