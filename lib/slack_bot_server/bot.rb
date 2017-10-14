@@ -112,13 +112,8 @@ class SlackBotServer::Bot
   def update(options)
     message = symbolize_keys(options)
 
-    if rtm_incompatible_message?(message)
-      debug "Sending via Web API", message
-      client.web_client.chat_postMessage(message)
-    else
-      debug "Sending via RTM API", message
-      client.message(message)
-    end
+    debug "Sending via Web API", message
+    client.web_client.chat_update(message)
   end
 
   # An placeholder for handling responses from the attachments
