@@ -63,6 +63,6 @@ class SlackBotServer::RemoteControl
   # @param method [String, Symbol] the name of the method to call
   # @param args [Array] the arguments for the method to call
   def call(key, method, args)
-    @queue.push([:call, [key, method, args]])
+    @queue.push([:call, key, method, args])
   end
 end
