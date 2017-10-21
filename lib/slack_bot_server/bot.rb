@@ -150,7 +150,7 @@ class SlackBotServer::Bot
 
   # Call a method directly in this instance
   def call(method, args)
-    send(method, args)
+    send(method, *args)
   end
 
   # Call a method directly on the Slack web API (via Slack::Web::Client).
