@@ -167,9 +167,6 @@ class SlackBotServer::Server
           message_data = args
           log "[#{bot_key}] update: #{message_data}"
           bot.update(message_data)
-        when :interactive_respond
-          log "[#{bot_key}] interactive_respond: #{args}"
-          bot.interactive_respond(*args)
         when :call
           method, method_args = args
           bot.call(method, method_args)

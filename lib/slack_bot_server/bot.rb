@@ -116,13 +116,6 @@ class SlackBotServer::Bot
     client.web_client.chat_update(message)
   end
 
-  # An placeholder for handling responses from the attachments
-  # api for interactive messages.
-  def interactive_respond(response)
-
-  end
-
-
   # Sends a message to every channel this bot is a member of
   # @param options [Hash] As {#say}, although the +:channel+ option is
   #   redundant
