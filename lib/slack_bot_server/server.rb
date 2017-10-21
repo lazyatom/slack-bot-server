@@ -59,7 +59,7 @@ class SlackBotServer::Server
   def initialize(queue: SlackBotServer::LocalQueue.new)
     @queue = queue
     @bots = {}
-    @add_proc = ->(token) { SlackBotServer::SimpleBot.new(token: token) }
+    @add_proc = -> (token) { SlackBotServer::SimpleBot.new(token: token) }
     @running = false
   end
 
@@ -114,7 +114,7 @@ class SlackBotServer::Server
       bot.start if @running
     end
   rescue => e
-    log_error(e, 'Attempting to add bot', *args)
+    log_error(e, "Attempting to add bot", *args)
   end
 
   # Stops and removes a bot from the server
@@ -137,7 +137,7 @@ class SlackBotServer::Server
         next_message = queue.pop
         process_instruction(next_message) if next_message
       rescue => e
-        log_error(e, 'error handling instructions')
+        log_error(e, "error handling instructions")
       end
     end
   end
