@@ -148,10 +148,14 @@ class SlackBotServer::Bot
     client.typing(default_options.merge(options))
   end
 
+  # Call a method directly in this instance
+  def call(method, args)
+    send(method, args)
+  end
+
   # Call a method directly on the Slack web API (via Slack::Web::Client).
   # Useful for debugging only.
-  def call(method, args)
-    args.symbolize_keys!
+  def slack_call(method, args)
     client.web_client.send(method, args)
   end
 
