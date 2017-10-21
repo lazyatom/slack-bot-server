@@ -102,13 +102,8 @@ class SlackBotServer::Bot
 
   # Update a message on Slack
   # @param options [Hash] a hash containing any of the following:
-  #    channel:: the name ('#general'), or the ID of the channel to send to
+  #    message_ts:: The timestamp of the original_message you want to update
   #    text:: the actual text of the message
-  #    username:: the name the message should appear from; defaults to the
-  #               value given to `username` in the Bot class definition
-  #    icon_url:: the image url to use as the avatar for this message;
-  #               defaults to the value given to `icon_url` in the Bot
-  #               class definition
   def update(options)
     message = symbolize_keys(options)
 
